@@ -63,7 +63,7 @@ export default function Dashboard() {
               <Add size="32" color="#ffffff" variant="Bold" />
             </div>
             <h2 className="text-2xl font-bold text-white mb-2">Create a Split</h2>
-            <p className="text-sm text-white/90 leading-relaxed max-w-[240px]">
+            <p className="text-sm text-white/90 leading-relaxed max-w-[300px]">
               Start a new savings circle and invite your friends to contribute together.
             </p>
           </div>
@@ -98,7 +98,7 @@ export default function Dashboard() {
               <Login size="32" color="#ffffff" variant="Bold" />
             </div>
             <h2 className="text-2xl font-bold text-white mb-2">Join a Split</h2>
-            <p className="text-sm text-white/90 leading-relaxed max-w-[240px]">
+            <p className="text-sm text-white/90 leading-relaxed max-w-[300px]">
               Got an invite code? Join an existing circle and start saving with others.
             </p>
           </div>
