@@ -31,12 +31,12 @@ export default function SignUpEmail() {
       </div>
 
       {/* Heading */}
-      <h1 className="text-3xl font-light text-gray-900 mb-10 max-w-[200px] leading-tight">
+      <h1 className="text-2xl font-light text-gray-900 mb-10 max-w-[200px] leading-tight">
         Start your savings circle.
       </h1>
 
       {/* Action Buttons */}
-      <div className="flex flex-col gap-6 mt-4">
+      <div className="flex flex-col gap-3.5 mt-4">
         <button 
           type="button"
           className="w-full py-4 bg-gray-50 text-gray-700 font-medium rounded-full hover:bg-gray-100 transition-colors flex items-center justify-center gap-3 border border-gray-200 text-sm"
@@ -80,7 +80,7 @@ export default function SignUpEmail() {
         </form>
       </div>
 
-      <div className=" flex justify-center pt-8">
+      <div className=" flex justify-center pt-5">
         <p className="text-sm text-gray-500">
           Got an account? <Link href="/login" className="text-primary font-semibold hover:underline">Sign in</Link>
         </p>

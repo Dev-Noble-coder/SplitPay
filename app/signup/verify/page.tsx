@@ -31,7 +31,7 @@ export default function SignUpVerify() {
       </div>
 
       {/* Heading */}
-      <h1 className="text-3xl font-light text-gray-900 mb-2 leading-tight">
+      <h1 className="text-2xl font-light text-gray-900 mb-2 leading-tight">
         Enter the code sent to
       </h1>
       <p className="text-gray-400 text-sm mb-10">
@@ -39,7 +39,7 @@ export default function SignUpVerify() {
       </p>
 
       {/* Action Buttons */}
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col">
         <form className="flex flex-col gap-6" onSubmit={(e) => e.preventDefault()}>
           <div className="relative">
             <label className="text-sm text-gray-400 mb-2 block">Code</label>
@@ -54,7 +54,7 @@ export default function SignUpVerify() {
             </div>
           </div>
 
-          <div className="flex justify-center my-2">
+          <div className="flex justify-center ">
             <button type="button" className="text-sm text-primary font-semibold hover:text-primary-dark ">
               Check your email
             </button>
@@ -69,7 +69,7 @@ export default function SignUpVerify() {
         </form>
       </div>
 
-      <div className=" flex justify-center pt-8">
+      <div className=" flex justify-center pt-5">
         <p className="text-sm text-gray-400">
           Wrong email? <Link href="/signup/email" className="text-primary font-semibold hover:underline">Start over</Link>
         </p>
