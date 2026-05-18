@@ -26,10 +26,10 @@ export default function Home() {
           </div>
         </div>
 
-        <h1 className="text-4xl font-bold text-white text-center mb-4 leading-tight">
+        <h1 className="text-2xl font-bold text-white text-center mb-4 leading-tight">
           Automate group savings and payouts.
         </h1>
-        <p className="text-white/80 text-center text-lg max-w-[400px] mx-auto leading-relaxed">
+        <p className="text-white/80 text-center  max-w-[400px] mx-auto leading-relaxed text-sm">
           Join trusted savings circles where members contribute fixed amounts securely.
         </p>
       </div>
@@ -39,13 +39,13 @@ export default function Home() {
         <div className="flex flex-col gap-4">
           <Link 
             href="/login" 
-            className="w-full py-4 px-6 rounded-full border-2 border-white/20 text-white font-semibold text-center text-lg hover:bg-white/10 transition-colors flex items-center justify-center gap-2"
+            className="w-full py-4 px-6 rounded-full border-2 border-white/20 text-white font-semibold text-center text-sm hover:bg-white/10 transition-colors flex items-center justify-center gap-2"
           >
             Log In
           </Link>
           <Link 
             href="/signup" 
-            className="w-full py-4 px-6 rounded-full bg-white text-primary font-bold text-center text-lg hover:bg-gray-100 transition-colors shadow-lg"
+            className="w-full py-4 px-6 rounded-full bg-white text-primary font-bold text-center text-sm hover:bg-gray-100 transition-colors shadow-lg"
           >
             Sign Up
           </Link>

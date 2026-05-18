@@ -55,14 +55,14 @@ export default function SignUpVerify() {
           </div>
 
           <div className="flex justify-center my-2">
-            <button type="button" className="text-sm text-primary font-semibold hover:text-primary-dark">
+            <button type="button" className="text-sm text-primary font-semibold hover:text-primary-dark ">
               Check your email
             </button>
           </div>
 
           <button 
             type="button"
-            className="w-full py-4 bg-primary text-white font-semibold rounded-full hover:bg-primary-dark transition-colors shadow-sm"
+            className="w-full py-4 bg-primary text-white font-semibold rounded-full hover:bg-primary-dark transition-colors shadow-sm text-sm"
           >
             Continue
           </button>

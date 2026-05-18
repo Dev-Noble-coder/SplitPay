@@ -24,7 +24,7 @@ export default function RootLayout({
     >
       <body className="min-h-full font-sans text-gray-900">
         {/* Mobile View Wrapper */}
-        <div className="md:hidden flex flex-col min-h-screen bg-white">
+        <div className="md:hidden flex flex-col h-screen bg-white">
           {children}
         </div>
 

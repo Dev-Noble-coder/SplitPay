@@ -39,7 +39,7 @@ export default function SignUpEmail() {
       <div className="flex flex-col gap-6 mt-4">
         <button 
           type="button"
-          className="w-full py-4 bg-gray-50 text-gray-700 font-medium rounded-full hover:bg-gray-100 transition-colors flex items-center justify-center gap-3 border border-gray-200"
+          className="w-full py-4 bg-gray-50 text-gray-700 font-medium rounded-full hover:bg-gray-100 transition-colors flex items-center justify-center gap-3 border border-gray-200 text-sm"
         >
           {/* Simple Google Icon */}
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -72,7 +72,7 @@ export default function SignUpEmail() {
           <Link href="/signup/verify" className="w-full">
             <button 
               type="button"
-              className="w-full py-4 bg-primary text-white font-semibold rounded-full hover:bg-primary-dark transition-colors shadow-sm"
+              className="w-full py-4 bg-primary text-white font-semibold rounded-full hover:bg-primary-dark transition-colors shadow-sm text-sm"
             >
               Get started
             </button>

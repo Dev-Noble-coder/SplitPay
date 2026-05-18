@@ -35,7 +35,7 @@ export default function Login() {
       </div>
 
       {/* Heading */}
-      <h1 className="text-3xl font-light text-gray-900 mb-10 max-w-[200px] leading-tight">
+      <h1 className="text-2xl font-light text-gray-900 mb-10 max-w-[200px] leading-tight">
         Jump right back in.
       </h1>
 
@@ -74,10 +74,10 @@ export default function Login() {
         </div>
 
         {/* Action Buttons */}
-        <div className="mt-4 flex flex-col gap-6">
+        <div className=" flex flex-col gap-3.5">
           <button 
             type="submit"
-            className="w-full py-4 bg-primary text-white font-semibold rounded-full hover:bg-primary-dark transition-colors shadow-sm"
+            className="w-full py-4 bg-primary text-white font-semibold rounded-full hover:bg-primary-dark transition-colors shadow-sm text-sm"
           >
             Log in
           </button>
@@ -90,7 +90,7 @@ export default function Login() {
 
           <button 
             type="button"
-            className="w-full py-4 bg-gray-50 text-gray-700 font-medium rounded-full hover:bg-gray-100 transition-colors flex items-center justify-center gap-3 border border-gray-200"
+            className="w-full py-4 bg-gray-50 text-gray-700 font-medium rounded-full hover:bg-gray-100 transition-colors flex items-center justify-center gap-3 border border-gray-200 text-sm"
           >
             {/* Simple Google Icon fallback since iconsax doesn't have a colored google logo */}
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

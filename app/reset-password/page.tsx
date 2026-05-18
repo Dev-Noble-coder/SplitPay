@@ -19,11 +19,11 @@ export default function ResetPassword() {
         transition={{ duration: 0.5, ease: "easeOut" }}
         className="flex-1 flex flex-col bg-primary px-6 pt-10 pb-10"
       >
-        <h1 className="text-3xl font-bold text-white mb-16 leading-tight">
+        <h1 className="text-2xl font-bold text-white mb-10 leading-tight">
           Reset Password
         </h1>
 
-        <form className="flex flex-col gap-8" onSubmit={(e) => e.preventDefault()}>
+        <form className="flex flex-col gap-5" onSubmit={(e) => e.preventDefault()}>
           <div className="relative">
             <label className="text-sm text-white/80 mb-1 block">Email Address</label>
             <div className="relative flex items-center border-b border-white/50 focus-within:border-white pb-2 transition-colors">
@@ -45,7 +45,7 @@ export default function ResetPassword() {
             </button>
           </div>
 
-          <div className="flex justify-center mt-6">
+          <div className="flex justify-center mt-1">
             <p className="text-sm text-white/80">
               Or <Link href="/signup" className="text-white font-medium hover:underline">Create new account</Link>
             </p>
