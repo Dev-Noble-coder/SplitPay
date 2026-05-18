@@ -12,6 +12,9 @@
   --color-primary: #0A50E4;
   --color-primary-dark: #073db3;
   --color-primary-light: #eff4ff;
+  --color-secondary: #EF533A;
+  --color-secondary-dark: #D4422B;
+  --color-secondary-light: #FADBD8;
 }
 
 body {
