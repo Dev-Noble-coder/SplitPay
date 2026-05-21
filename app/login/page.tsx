@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, Sms, Lock1, EyeSlash, Eye } from "iconsax-react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
-import { login, setToken } from "../services/authService";
+import { login, setLoggedIn } from "../services/authService";
 
 export default function Login() {
   const router = useRouter();
@@ -32,19 +32,13 @@ export default function Login() {
     try {
       const data = await login({ email, password });
       toast.success("Logged in successfully! Welcome back.", { id: toastId });
-
-      console.log(data)
       
       
-      if (data?.token) {
-        setToken(data.token);
-      }
-      if (data?.user) {
-        localStorage.setItem("splitpay_user", JSON.stringify(data.user));
-      }
+      setLoggedIn(true);
 
-      // Smooth transition to dashboard
-      // router.push("/dashboard");
+      setIsLoading(false)
+
+      router.push("/dashboard");
     } catch (err: any) {
       console.error("Login error details:", err);
       const errMsg = err.response?.data?.message || err.message || "Failed to log in. Please check your credentials.";
@@ -98,7 +92,7 @@ export default function Login() {
                 disabled={isLoading}
                 required
               />
-              <Sms size="20" className="text-gray-400 absolute right-0" />
+              <Sms size="20" color="grey" className="text-gray-400 absolute right-0" />
             </div>
           </div>
 
@@ -120,7 +114,7 @@ export default function Login() {
                 onClick={() => setShowPassword(!showPassword)}
                 disabled={isLoading}
               >
-                {showPassword ? <Eye size="20" /> : <EyeSlash size="20" />}
+                {showPassword ? <Eye size="20" color="grey" /> : <EyeSlash size="20" color="grey"/>}
               </button>
             </div>
           </div>

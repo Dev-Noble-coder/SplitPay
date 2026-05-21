@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Sms, EyeSlash, Eye } from "iconsax-react";
+import { ArrowLeft, Sms, EyeSlash, Eye, User } from "iconsax-react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { createUser } from "../../services/authService";
@@ -12,6 +12,7 @@ export default function SignUpEmail() {
   const router = useRouter();
 
   // State variables with corrected standard lowercase TS types
+  const [fullName, setFullName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -21,7 +22,7 @@ export default function SignUpEmail() {
     e.preventDefault();
 
     // Client-side validation
-    if (!email.trim() || !password.trim()) {
+    if (!fullName.trim() || !email.trim() || !password.trim()) {
       toast.error("Please fill in all fields.");
       return;
     }
@@ -35,7 +36,7 @@ export default function SignUpEmail() {
     const toastId = toast.loading("Creating your SplitPay account...");
 
     try {
-      const data = await createUser({ email, password });
+      const data = await createUser({ fullName, email, password });
       toast.success("Account created successfully! Please log in.", { id: toastId });
       
       
@@ -107,6 +108,19 @@ export default function SignUpEmail() {
             <div className="relative">
               <div className="relative flex items-center border-b border-gray-300 focus-within:border-primary pb-2 transition-colors">
                 <input 
+                  type="text" 
+                  className="w-full outline-none text-gray-900 placeholder-gray-400 text-sm disabled:opacity-50"
+                  placeholder="Full name"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  disabled={isLoading}
+                  required
+                />
+                <User size="20" color="grey" className="text-gray-400 absolute right-0" />
+              </div>
+
+              <div className="relative flex items-center border-b border-gray-300 focus-within:border-primary pb-2 transition-colors mt-5">
+                <input 
                   type="email" 
                   className="w-full outline-none text-gray-900 placeholder-gray-400 text-sm disabled:opacity-50 animate-none"
                   placeholder="Type in your email"
@@ -115,7 +129,7 @@ export default function SignUpEmail() {
                   disabled={isLoading}
                   required
                 />
-                <Sms size="20" className="text-gray-400 absolute right-0" />
+                <Sms size="20" color="gray" className="text-gray-400 absolute right-0" />
               </div>
               
               <div className="relative flex items-center border-b border-gray-300 focus-within:border-primary pb-2 transition-colors mt-5">
@@ -134,7 +148,7 @@ export default function SignUpEmail() {
                   onClick={() => setShowPassword(!showPassword)}
                   disabled={isLoading}
                 >
-                  {showPassword ? <Eye size="20" /> : <EyeSlash size="20" />}
+                  {showPassword ? <Eye size="20" color="grey" /> : <EyeSlash size="20" color="grey" />}
                 </button>
               </div>
             </div>
