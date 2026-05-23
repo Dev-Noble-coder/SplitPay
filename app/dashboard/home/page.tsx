@@ -3,6 +3,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { isLoggedIn } from "../../services/authService";
 import axiosInstance from "@/utils/axiosInstance";
+import MobileNav from "@/app/components/MobileNav";
+import Header from "@/app/components/Header";
+import BalanceCard from "@/app/components/BalanceCard";
 
 export default function DashboardHome() {
   const { data: userResponse, isLoading: loadingUser } = useQuery({
@@ -29,9 +32,12 @@ export default function DashboardHome() {
   }
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold">Welcome back, {user?.fullName || user?.name || "User"}!</h1>
-      <p className="text-gray-500 mt-2">Your active savings dashboard will appear here.</p>
-    </div>
+    <>
+      <Header user={user} />
+      <div className="flex-1 overflow-y-auto pb-24">
+        <BalanceCard />
+      </div>
+      <MobileNav />
+    </>
   );
 }

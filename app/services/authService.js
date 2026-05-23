@@ -42,7 +42,7 @@ export function setLoggedIn(status) {
  * Sends a refresh token request (backend automatically returns new HTTP-Only cookies).
  */
 export async function refreshToken() {
-  const response = await axios.post(`${API_BASE_URL}/refresh`, {}, {
+  const response = await axios.post(`${API_BASE_URL}/refresh-token`, {}, {
     withCredentials: true,
   });
   return response.data;
