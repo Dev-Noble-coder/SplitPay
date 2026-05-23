@@ -6,6 +6,8 @@ import axiosInstance from "@/utils/axiosInstance";
 import MobileNav from "@/app/components/MobileNav";
 import Header from "@/app/components/Header";
 import BalanceCard from "@/app/components/BalanceCard";
+import CreateandViewMoreSplit from "@/app/components/CreateandViewMoreSplit";
+import JoinASplit from "@/app/components/JoinASplit";
 
 export default function DashboardHome() {
   const { data: userResponse, isLoading: loadingUser } = useQuery({
@@ -36,6 +38,11 @@ export default function DashboardHome() {
       <Header user={user} />
       <div className="flex-1 overflow-y-auto pb-24">
         <BalanceCard />
+        <CreateandViewMoreSplit />
+        <div className="mt-10">
+          <h2 className="font-semibold text-xl text-blue-950">Top Performing Splits</h2>
+        </div>
+        <JoinASplit />
       </div>
       <MobileNav />
     </>
