@@ -38,7 +38,11 @@ export default function Login() {
 
       setIsLoading(false)
 
-      router.push("/dashboard");
+      if (data.isFirstLogin === false) {
+        router.push("/dashboard/home");
+      } else {
+        router.push("/dashboard");
+      }
     } catch (err: any) {
       console.error("Login error details:", err);
       const errMsg = err.response?.data?.message || err.message || "Failed to log in. Please check your credentials.";

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import { Toaster } from "sonner";
+import { QueryProvider } from "./QueryProvider";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -24,11 +25,12 @@ export default function RootLayout({
       className={`${outfit.variable} h-full antialiased bg-gray-50`}
     >
       <body className="min-h-full font-sans text-gray-900">
-        <Toaster richColors position="top-center" closeButton />
-        {/* Mobile View Wrapper */}
-        <div className="md:hidden flex flex-col h-screen bg-white">
-          {children}
-        </div>
+        <QueryProvider>
+          <Toaster richColors position="top-center" closeButton />
+          {/* Mobile View Wrapper */}
+          <div className="md:hidden flex flex-col h-screen bg-white">
+            {children}
+          </div>
 
         {/* Desktop Disabled View */}
         <div className="hidden md:flex flex-col min-h-screen items-center justify-center bg-gray-100 p-6 text-center">
@@ -39,6 +41,7 @@ export default function RootLayout({
             </p>
           </div>
         </div>
+        </QueryProvider>
       </body>
     </html>
   );

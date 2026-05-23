@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
 import { Add, Login, WalletAdd, ElementPlus, ArrowLeft, Copy, TickCircle } from "iconsax-react";
 import { toast } from "sonner";
@@ -12,17 +13,13 @@ export default function Dashboard() {
   const router = useRouter();
 
   // Authentication & Profile State
-  const [user, setUser] = useState<any>(null);
-  const [loadingUser, setLoadingUser] = useState(true);
-
-  // Demo state for first login
-  const [isFirstLogin, setIsFirstLogin] = useState(true);
   const [activeCard, setActiveCard] = useState<"join" | "create">("join");
 
   // Form Flow States
   const [isCreatingSplit, setIsCreatingSplit] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [shareCode, setShareCode] = useState<string | null>(null);
+
+  const queryClient = useQueryClient();
 
   // Form Fields
   const [name, setName] = useState("");
@@ -31,62 +28,61 @@ export default function Dashboard() {
   const [numberofusers, setNumberofusers] = useState(4);
 
 
-  // useEffect(() => {
-  //   const loggedIn = isLoggedIn();
-  //   if (!loggedIn) {
-  //     router.push("/login");
-  //     return;
-  //   }
+  useEffect(() => {
+    if (!isLoggedIn()) {
+      router.push("/login");
+    }
+  }, [router]);
 
-  //   const fetchUserProfile = async () => {
-  //     try {
-  //       const response = await axiosInstance.post("/userinfos");
-  //       setUser(response.data);
-  //     } catch (err: any) {
-  //       console.error("Failed to load user info:", err);
-  //       // Toast is handled inside interceptor if it returns a 401
-  //     } finally {
-  //       setLoadingUser(false);
-  //     }
-  //   };
+  const { data: userResponse, isLoading: loadingUser } = useQuery({
+    queryKey: ['userProfile'],
+    queryFn: async () => {
+      const response = await axiosInstance.post("/profile");
+      return response.data;
+    },
+    enabled: isLoggedIn(),
+  });
+  
+  const user = userResponse?.userInformation || userResponse;
 
-  //   fetchUserProfile();
-  // }, [router]);
+  const createSplitMutation = useMutation({
+    mutationFn: async (payload: any) => {
+      const response = await axiosInstance.post("/create-splits", payload);
+      return response.data;
+    },
+    onSuccess: (data) => {
+      toast.success("Split Circle created successfully!", { id: "create-split" });
+      const code = data?.split?.splitCode || data?.shareCode || data?.code || data?.circleCode || Math.random().toString(36).substring(2, 8).toUpperCase();
+      setShareCode(code);
+      queryClient.invalidateQueries({ queryKey: ['splits'] });
+    },
+    onError: (err: any) => {
+      console.error("Create split error:", err);
+      const errMsg = err.response?.data?.message || err.message || "Failed to create Split Circle. Please try again.";
+      toast.error(errMsg, { id: "create-split" });
+    }
+  });
+
+  const isSubmitting = createSplitMutation.isPending;
 
   // Form submission handler
   const handleCreateSplitSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !priceForSplit) return;
 
-    setIsSubmitting(true);
-    const toastId = toast.loading("Launching your Split Circle...");
+    toast.loading("Launching your Split Circle...", { id: "create-split" });
 
-    try {
-      const creatorId = user?.id || user?._id || user?.userID || user?.userId || "anonymous";
+    const creatorId = user?._id || user?.id || user?.userID || user?.userId || "anonymous";
 
-      const payload = {
-        name: name.trim(),
-        priceForSplit: parseFloat(priceForSplit),
-        payout: payout,
-        numberofusers: numberofusers,
-        creatorId: creatorId,
-      };
+    const payload = {
+      name: name.trim(),
+      priceForSplit: parseFloat(priceForSplit),
+      payout: payout,
+      numberofusers: numberofusers,
+      creatorId: creatorId,
+    };
 
-      const response = await axiosInstance.post("/splits", payload);
-      const data = response.data;
-
-      toast.success("Split Circle created successfully!", { id: toastId });
-
-      // Support backend variations in returning share code, otherwise generate an organic fallback
-      const code = data?.shareCode || data?.code || data?.circleCode || Math.random().toString(36).substring(2, 8).toUpperCase();
-      setShareCode(code);
-    } catch (err: any) {
-      console.error("Create split error:", err);
-      const errMsg = err.response?.data?.message || err.message || "Failed to create Split Circle. Please try again.";
-      toast.error(errMsg, { id: toastId });
-    } finally {
-      setIsSubmitting(false);
-    }
+    createSplitMutation.mutate(payload);
   };
 
   const handleCopyShareCode = () => {
@@ -95,47 +91,22 @@ export default function Dashboard() {
     toast.success("Share code copied to clipboard!");
   };
 
-  const handleShareWhatsApp = () => {
-    if (!shareCode) return;
-    const message = encodeURIComponent(`Hey! Join my SplitPay savings circle "${name}" using this invite code: ${shareCode}. Let's save together! 💸`);
-    window.open(`https://api.whatsapp.com/send?text=${message}`, "_blank");
-  };
+  // WhatsApp sharing removed per request
 
-  // if (loadingUser) {
-  //   return (
-  //     <main className="flex-1 flex flex-col justify-center items-center bg-gray-50 p-6">
-  //       <svg className="animate-spin h-8 w-8 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-  //         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-  //         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-  //       </svg>
-  //       <p className="text-gray-500 mt-4 font-medium text-sm">Synchronizing dashboard...</p>
-  //     </main>
-  //   );
-  // }
-
-  // if (!isFirstLogin) {
-  //   return (
-  //     <main className="flex-1 flex flex-col bg-white p-6">
-  //       <h1 className="text-2xl font-bold">Welcome back, {user?.name || "User"}!</h1>
-  //       <p className="text-gray-500 mt-2">Your active savings dashboard will appear here.</p>
-  //     </main>
-  //   );
-  // }
+  if (loadingUser) {
+    return (
+      <div className="flex-1 flex flex-col justify-center items-center">
+        <svg className="animate-spin h-8 w-8 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <p className="text-gray-500 mt-4 font-medium text-sm">Synchronizing dashboard...</p>
+      </div>
+    );
+  }
 
   return (
-    <motion.main 
-      initial={{ opacity: 0 }} 
-      animate={{ opacity: 1 }} 
-      className="flex-1 flex flex-col bg-gray-50 pt-8 px-6 pb-10 overflow-hidden relative min-h-screen"
-    >
-      {/* Background SVG Decorations */}
-      <div className="absolute top-0 right-0 -mr-16 -mt-16 opacity-5 pointer-events-none">
-        <WalletAdd size="250" color="#0A50E4" variant="Bold" />
-      </div>
-      <div className="absolute bottom-10 left-0 -ml-16 opacity-5 pointer-events-none transform -rotate-12">
-        <ElementPlus size="200" color="#0A50E4" variant="Bold" />
-      </div>
-
+    <>
       {/* Main Title Section */}
       <AnimatePresence mode="wait">
         {!isCreatingSplit && (
@@ -175,12 +146,12 @@ export default function Dashboard() {
               height: isCreatingSplit ? "520px" : "320px",
             }}
             transition={{ type: "spring", stiffness: 280, damping: 26 }}
-            className={`absolute top-0 w-full rounded-xl p-6 shadow-xl flex flex-col bg-secondary border-t border-white/20 transition-all ${
+            className={`absolute top-0 w-full rounded-xl p-6 shadow-xl flex flex-col ${shareCode ? 'bg-white' : 'bg-secondary'} border-t ${shareCode ? 'border-gray-100' : 'border-white/20'} transition-all ${
               isCreatingSplit ? "cursor-default" : "cursor-pointer h-[320px]"
             } ${activeCard === "create" && !isCreatingSplit ? "cursor-default" : ""}`}
           >
             {/* Form Flow Header */}
-            {isCreatingSplit && (
+            {isCreatingSplit && !shareCode && (
               <div className="flex items-center justify-between w-full mb-6">
                 <button 
                   onClick={(e) => {
@@ -227,38 +198,31 @@ export default function Dashboard() {
               <motion.div 
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="flex flex-col items-center flex-1 justify-center text-white py-2 text-center"
+                className="flex flex-col items-center flex-1 justify-center text-gray-900 text-center border border-gray-200 rounded-lg"
               >
-                <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mb-4 animate-bounce">
-                  <TickCircle size="40" color="#ffffff" variant="Bold" />
+                <div className="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mb-4 animate-bounce">
+                  <TickCircle size="40" color="#22c55e" variant="Bold" />
                 </div>
                 <h3 className="text-2xl font-extrabold mb-1">Circle Launched!</h3>
-                <p className="text-xs text-white/90 mb-5 max-w-[260px]">
-                  Your savings circle <span className="font-bold">"{name}"</span> is active. Share this code with friends so they can contribute.
+                <p className="text-sm text-gray-500 mb-5 max-w-[260px]">
+                  Your savings circle <span className="font-bold text-gray-900">"{name}"</span> is active. Share this code with friends so they can contribute.
                 </p>
                 
                 {/* Share Code Pill */}
-                <div className="bg-white/20 backdrop-blur-md border border-white/30 rounded-xl p-3 flex items-center justify-between w-full max-w-[280px] mb-6">
-                  <span className="font-mono text-xl font-bold tracking-widest text-white ml-2 select-all">
+                <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 flex items-center justify-between w-full max-w-[320px] mb-6">
+                  <span className="font-mono text-xl font-bold tracking-widest text-primary ml-2 select-all">
                     {shareCode}
                   </span>
                   <button 
                     onClick={handleCopyShareCode}
-                    className="p-2 bg-white text-secondary rounded-lg hover:bg-gray-50 active:scale-95 transition-all shadow-sm cursor-pointer"
+                    className="p-2 bg-white text-secondary rounded-md hover:bg-gray-100 active:scale-95 transition-all shadow-sm border border-gray-200 cursor-pointer"
                     title="Copy Share Code"
                   >
                     <Copy size="18" color="currentColor" variant="Bold" />
                   </button>
                 </div>
                 
-                <div className="flex flex-col gap-2.5 w-full max-w-[280px]">
-                  <button 
-                    onClick={handleShareWhatsApp}
-                    className="w-full py-3 bg-green-500 hover:bg-green-600 active:scale-98 text-white font-bold rounded-full text-xs transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
-                  >
-                    Share on WhatsApp
-                  </button>
-                  
+                <div className="flex flex-col gap-2.5 w-full px-5">
                   <button 
                     onClick={() => {
                       setIsCreatingSplit(false);
@@ -267,10 +231,11 @@ export default function Dashboard() {
                       setPriceForSplit("");
                       setPayout("weekly");
                       setNumberofusers(4);
+                      router.push("/dashboard/home");
                     }}
-                    className="w-full py-3 bg-white text-secondary hover:bg-gray-50 active:scale-98 font-bold rounded-full text-xs transition-all shadow-sm cursor-pointer"
+                    className="w-full py-3 bg-primary text-white hover:bg-primary/90 active:scale-98 font-bold rounded-full text-xs transition-all shadow-sm cursor-pointer"
                   >
-                    Back to Home
+                    Continue to Dashboard
                   </button>
                 </div>
               </motion.div>
@@ -433,6 +398,6 @@ export default function Dashboard() {
           </AnimatePresence>
         </div>
       </div>
-    </motion.main>
+    </>
   );
 }
