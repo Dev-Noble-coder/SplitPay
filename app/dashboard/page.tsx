@@ -17,6 +17,7 @@ export default function Dashboard() {
 
   // Form Flow States
   const [isCreatingSplit, setIsCreatingSplit] = useState(false);
+  const [isNavigatingToHome, setIsNavigatingToHome] = useState(false);
   const [shareCode, setShareCode] = useState<string | null>(null);
 
   const queryClient = useQueryClient();
@@ -139,13 +140,14 @@ export default function Dashboard() {
           <motion.div
             onClick={() => !isCreatingSplit && activeCard !== "create" && setActiveCard("create")}
             initial={false}
+            
             animate={{
               y: isCreatingSplit ? 0 : activeCard === "create" ? 0 : -60,
               scale: isCreatingSplit ? 1 : activeCard === "create" ? 1 : 0.95,
               zIndex: isCreatingSplit || activeCard === "create" ? 20 : 0,
               height: isCreatingSplit ? "520px" : "320px",
             }}
-            transition={{ type: "spring", stiffness: 280, damping: 26 }}
+            transition={{ type: "tween", ease: "easeInOut", duration: 0.4 }}
             className={`absolute top-0 w-full rounded-xl p-6 shadow-xl flex flex-col ${shareCode ? 'bg-white' : 'bg-secondary'} border-t ${shareCode ? 'border-gray-100' : 'border-white/20'} transition-all ${
               isCreatingSplit ? "cursor-default" : "cursor-pointer h-[320px]"
             } ${activeCard === "create" && !isCreatingSplit ? "cursor-default" : ""}`}
@@ -225,17 +227,23 @@ export default function Dashboard() {
                 <div className="flex flex-col gap-2.5 w-full px-5">
                   <button 
                     onClick={() => {
-                      setIsCreatingSplit(false);
-                      setShareCode(null);
-                      setName("");
-                      setPriceForSplit("");
-                      setPayout("weekly");
-                      setNumberofusers(4);
+                      setIsNavigatingToHome(true);
                       router.push("/dashboard/home");
                     }}
-                    className="w-full py-3 bg-primary text-white hover:bg-primary/90 active:scale-98 font-bold rounded-full text-xs transition-all shadow-sm cursor-pointer"
+                    disabled={isNavigatingToHome}
+                    className="w-full py-3 bg-primary text-white hover:bg-primary/90 active:scale-98 font-bold rounded-full text-xs transition-all shadow-sm cursor-pointer flex items-center justify-center gap-2 disabled:opacity-75 disabled:cursor-wait"
                   >
-                    Continue to Dashboard
+                    {isNavigatingToHome ? (
+                      <>
+                        <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Routing...
+                      </>
+                    ) : (
+                      "Continue to Dashboard"
+                    )}
                   </button>
                 </div>
               </motion.div>
@@ -368,7 +376,7 @@ export default function Dashboard() {
                   opacity: activeCard === "join" ? 1 : 0.4,
                 }}
                 exit={{ opacity: 0, y: 150, scale: 0.9 }}
-                transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                transition={{ type: "tween", ease: "easeInOut", duration: 0.4 }}
                 className={`absolute top-0 w-full rounded-2xl p-6 shadow-xl flex flex-col items-center justify-center text-center h-[320px] bg-primary cursor-pointer border-t border-white/20 ${
                   activeCard === "join" ? "cursor-default" : ""
                 }`}

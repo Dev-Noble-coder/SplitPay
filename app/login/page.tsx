@@ -39,7 +39,7 @@ export default function Login() {
       setIsLoading(false)
 
       if (data.isFirstLogin === false) {
-        router.push("/dashboard/home");
+        router.push("/dashboard");
       } else {
         router.push("/dashboard");
       }
