@@ -40,7 +40,7 @@ const Header = ({ user }: { user?: any }) => {
       <div className="flex items-center gap-6">
         <button className="text-lg font-bold text-[#0A50E4]">Home</button>
         <button className="text-lg font-medium text-gray-400 hover:text-gray-600 transition-colors">My Splits</button>
-        <button className="text-lg font-medium text-gray-400 hover:text-gray-600 transition-colors">Payouts</button>
+        <button className="text-lg font-medium text-gray-400 hover:text-gray-600 transition-colors">Joined Splits</button>
       </div>
     </div>
   )

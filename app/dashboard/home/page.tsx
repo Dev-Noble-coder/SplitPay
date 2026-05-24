@@ -2,24 +2,29 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { isLoggedIn } from "../../services/authService";
-import axiosInstance from "@/utils/axiosInstance";
+import { fetchUserProfile, fetchSplits, QUERY_KEYS } from "@/app/queries/dashboardQueries";
 import MobileNav from "@/app/components/MobileNav";
 import Header from "@/app/components/Header";
 import BalanceCard from "@/app/components/BalanceCard";
 import CreateandViewMoreSplit from "@/app/components/CreateandViewMoreSplit";
 import JoinASplit from "@/app/components/JoinASplit";
+import SplitsClosingSoon from "@/app/components/SplitsClosingSoon";
 
 export default function DashboardHome() {
   const { data: userResponse, isLoading: loadingUser } = useQuery({
-    queryKey: ['userProfile'],
-    queryFn: async () => {
-      const response = await axiosInstance.post("/profile");
-      return response.data;
-    },
+    queryKey: QUERY_KEYS.userProfile,
+    queryFn: fetchUserProfile,
     enabled: isLoggedIn(),
   });
-  
+
+  const { data: splitsResponse } = useQuery({
+    queryKey: QUERY_KEYS.splits,
+    queryFn: fetchSplits,
+    enabled: isLoggedIn(),
+  });
+
   const user = userResponse?.userInformation || userResponse;
+  const splitsCount: number = splitsResponse?.splitsfound ?? 0;
 
   if (loadingUser) {
     return (
@@ -40,7 +45,15 @@ export default function DashboardHome() {
         <BalanceCard />
         <CreateandViewMoreSplit />
         <div className="mt-10">
-          <h2 className="font-semibold text-xl text-blue-950">Top Performing Splits</h2>
+          <div className="flex items-center gap-2">
+            <h2 className="font-semibold text-xl text-blue-950">Splits Closing Soon</h2>
+            {splitsCount > 0 && (
+              <span className="px-2 py-0.5 bg-red-100 text-red-500 text-xs font-bold rounded-full">
+                {splitsCount}
+              </span>
+            )}
+          </div>
+          <SplitsClosingSoon />
         </div>
         <JoinASplit />
       </div>

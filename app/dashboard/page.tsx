@@ -4,10 +4,11 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
-import { Add, Login, WalletAdd, ElementPlus, ArrowLeft, Copy, TickCircle } from "iconsax-react";
+import { Add, Login, ArrowLeft, Copy, TickCircle } from "iconsax-react";
 import { toast } from "sonner";
 import { isLoggedIn } from "../services/authService";
 import axiosInstance from "@/utils/axiosInstance";
+import { fetchUserProfile, QUERY_KEYS } from "@/app/queries/dashboardQueries";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -36,11 +37,8 @@ export default function Dashboard() {
   }, [router]);
 
   const { data: userResponse, isLoading: loadingUser } = useQuery({
-    queryKey: ['userProfile'],
-    queryFn: async () => {
-      const response = await axiosInstance.post("/profile");
-      return response.data;
-    },
+    queryKey: QUERY_KEYS.userProfile,
+    queryFn: fetchUserProfile,
     enabled: isLoggedIn(),
   });
   
