@@ -61,6 +61,7 @@ export default function DashboardHome() {
           onSwiper={(swiper) => (swiperRef.current = swiper)}
           onSlideChange={(swiper) => setActiveTab(swiper.activeIndex)}
           className="w-full h-full"
+          spaceBetween={24}
         >
           <SwiperSlide className="overflow-y-auto h-full pb-24 no-scrollbar">
             <BalanceCard />

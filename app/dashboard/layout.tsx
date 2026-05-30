@@ -19,7 +19,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     <motion.main 
       initial={{ opacity: 0 }} 
       animate={{ opacity: 1 }} 
-      className="flex-1 flex flex-col bg-gray-50 pt-8 px-6 pb-10 overflow-hidden relative min-h-screen"
+      className="flex-1 flex flex-col bg-gray-50 pt-8 px-4 pb-10 overflow-hidden relative min-h-screen"
     >
       {/* Background SVG Decorations */}
       <div className="absolute top-0 right-0 -mr-16 -mt-16 opacity-5 pointer-events-none">

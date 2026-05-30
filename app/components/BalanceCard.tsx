@@ -22,7 +22,7 @@ const BalanceCard = ({ totalBalance = 0, totalInvested = 0 }: BalanceCardProps) 
 
   return (
     <div className="w-full mt-6">
-      <div className="w-full bg-[#0A50E4] rounded-lg p-6 text-white relative overflow-hidden shadow shadow-blue-500/30">
+      <div className="w-full bg-[#0A50E4] rounded-lg p-6 text-white relative overflow-hidden shadow shadow-blue-500/30 ">
         
         {/* Subtle Background Pattern/Gradients */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl transform translate-x-1/3 -translate-y-1/3"></div>
