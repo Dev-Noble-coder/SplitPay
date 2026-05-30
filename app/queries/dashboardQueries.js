@@ -12,6 +12,7 @@ import axiosInstance from "@/utils/axiosInstance";
 export const QUERY_KEYS = {
   userProfile: ["userProfile"],
   splits: ["splits"],
+  mySplits: ["mySplits"],
 };
 
 // ─── Fetchers ──────────────────────────────────────────────────────────────────
@@ -32,5 +33,15 @@ export async function fetchUserProfile() {
  */
 export async function fetchSplits() {
   const response = await axiosInstance.get("/get-splits");
+  return response.data;
+}
+
+/**
+ * Fetch the splits created by the currently authenticated user.
+ * GET /userown-split
+ * Response: { message, splitsfound, split: [{ _id, name, priceForSplit }] }
+ */
+export async function fetchMySplits() {
+  const response = await axiosInstance.get("/userown-split");
   return response.data;
 }

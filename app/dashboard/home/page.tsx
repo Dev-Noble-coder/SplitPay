@@ -9,6 +9,7 @@ import BalanceCard from "@/app/components/BalanceCard";
 import CreateandViewMoreSplit from "@/app/components/CreateandViewMoreSplit";
 import JoinASplit from "@/app/components/JoinASplit";
 import SplitsClosingSoon from "@/app/components/SplitsClosingSoon";
+import MySplitsContent from "@/app/components/MySplitsContent";
 import { useState, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperType } from "swiper";
@@ -61,7 +62,7 @@ export default function DashboardHome() {
           onSlideChange={(swiper) => setActiveTab(swiper.activeIndex)}
           className="w-full h-full"
         >
-          <SwiperSlide className="overflow-y-auto h-full pb-24">
+          <SwiperSlide className="overflow-y-auto h-full pb-24 no-scrollbar">
             <BalanceCard />
             <CreateandViewMoreSplit />
             <div className="mt-10">
@@ -77,12 +78,10 @@ export default function DashboardHome() {
             </div>
             <JoinASplit />
           </SwiperSlide>
-          <SwiperSlide className="overflow-y-auto h-full pb-24">
-            <div className="flex flex-col items-center justify-center h-full text-gray-500">
-              <p>My Splits Content</p>
-            </div>
+          <SwiperSlide className="overflow-y-auto h-full pb-24 no-scrollbar">
+            <MySplitsContent />
           </SwiperSlide>
-          <SwiperSlide className="overflow-y-auto h-full pb-24">
+          <SwiperSlide className="overflow-y-auto h-full pb-24 no-scrollbar">
             <div className="flex flex-col items-center justify-center h-full text-gray-500">
               <p>Joined Splits Content</p>
             </div>
