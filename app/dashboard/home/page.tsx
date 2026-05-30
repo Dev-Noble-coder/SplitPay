@@ -9,6 +9,10 @@ import BalanceCard from "@/app/components/BalanceCard";
 import CreateandViewMoreSplit from "@/app/components/CreateandViewMoreSplit";
 import JoinASplit from "@/app/components/JoinASplit";
 import SplitsClosingSoon from "@/app/components/SplitsClosingSoon";
+import { useState, useRef } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import type { Swiper as SwiperType } from "swiper";
+import "swiper/css";
 
 export default function DashboardHome() {
   const { data: userResponse, isLoading: loadingUser } = useQuery({
@@ -22,6 +26,9 @@ export default function DashboardHome() {
     queryFn: fetchSplits,
     enabled: isLoggedIn(),
   });
+
+  const [activeTab, setActiveTab] = useState(0);
+  const swiperRef = useRef<SwiperType | null>(null);
 
   const user = userResponse?.userInformation || userResponse;
   const splitsCount: number = splitsResponse?.splitsfound ?? 0;
@@ -40,22 +47,47 @@ export default function DashboardHome() {
 
   return (
     <>
-      <Header user={user} />
-      <div className="flex-1 overflow-y-auto pb-24">
-        <BalanceCard />
-        <CreateandViewMoreSplit />
-        <div className="mt-10">
-          <div className="flex items-center gap-2">
-            <h2 className="font-semibold text-xl text-blue-950">Splits Closing Soon</h2>
-            {splitsCount > 0 && (
-              <span className="px-2 py-0.5 bg-red-100 text-red-500 text-xs font-bold rounded-full">
-                {splitsCount}
-              </span>
-            )}
-          </div>
-          <SplitsClosingSoon />
-        </div>
-        <JoinASplit />
+      <Header 
+        user={user} 
+        activeTab={activeTab} 
+        onTabChange={(index) => {
+          setActiveTab(index);
+          swiperRef.current?.slideTo(index);
+        }} 
+      />
+      <div className="flex-1 min-h-0 w-full relative">
+        <Swiper
+          onSwiper={(swiper) => (swiperRef.current = swiper)}
+          onSlideChange={(swiper) => setActiveTab(swiper.activeIndex)}
+          className="w-full h-full"
+        >
+          <SwiperSlide className="overflow-y-auto h-full pb-24">
+            <BalanceCard />
+            <CreateandViewMoreSplit />
+            <div className="mt-10">
+              <div className="flex items-center gap-2">
+                <h2 className="font-semibold text-xl text-blue-950">Splits Closing Soon</h2>
+                {splitsCount > 0 && (
+                  <span className="px-2 py-0.5 bg-red-100 text-red-500 text-xs font-bold rounded-full">
+                    {splitsCount}
+                  </span>
+                )}
+              </div>
+              <SplitsClosingSoon />
+            </div>
+            <JoinASplit />
+          </SwiperSlide>
+          <SwiperSlide className="overflow-y-auto h-full pb-24">
+            <div className="flex flex-col items-center justify-center h-full text-gray-500">
+              <p>My Splits Content</p>
+            </div>
+          </SwiperSlide>
+          <SwiperSlide className="overflow-y-auto h-full pb-24">
+            <div className="flex flex-col items-center justify-center h-full text-gray-500">
+              <p>Joined Splits Content</p>
+            </div>
+          </SwiperSlide>
+        </Swiper>
       </div>
       <MobileNav />
     </>

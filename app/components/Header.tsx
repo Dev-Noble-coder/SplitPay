@@ -1,7 +1,7 @@
 import React from 'react'
 import { Notification } from 'iconsax-react'
 
-const Header = ({ user }: { user?: any }) => {
+const Header = ({ user, activeTab = 0, onTabChange }: { user?: any, activeTab?: number, onTabChange?: (index: number) => void }) => {
   const getInitials = (name: string) => {
     if (!name) return "U";
     return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
@@ -37,10 +37,25 @@ const Header = ({ user }: { user?: any }) => {
       </div>
 
       {/* Bottom Row: Tabs */}
-      <div className="flex items-center gap-6">
-        <button className="text-lg font-bold text-[#0A50E4]">Home</button>
-        <button className="text-lg font-medium text-gray-400 hover:text-gray-600 transition-colors">My Splits</button>
-        <button className="text-lg font-medium text-gray-400 hover:text-gray-600 transition-colors">Joined Splits</button>
+      <div className="flex items-center gap-6 overflow-x-auto no-scrollbar">
+        <button 
+          onClick={() => onTabChange && onTabChange(0)} 
+          className={`text-lg transition-colors whitespace-nowrap ${activeTab === 0 ? "font-bold text-[#0A50E4]" : "font-medium text-gray-400 hover:text-gray-600"}`}
+        >
+          Home
+        </button>
+        <button 
+          onClick={() => onTabChange && onTabChange(1)}
+          className={`text-lg transition-colors whitespace-nowrap ${activeTab === 1 ? "font-bold text-[#0A50E4]" : "font-medium text-gray-400 hover:text-gray-600"}`}
+        >
+          My Splits
+        </button>
+        <button 
+          onClick={() => onTabChange && onTabChange(2)}
+          className={`text-lg transition-colors whitespace-nowrap ${activeTab === 2 ? "font-bold text-[#0A50E4]" : "font-medium text-gray-400 hover:text-gray-600"}`}
+        >
+          Joined Splits
+        </button>
       </div>
     </div>
   )
