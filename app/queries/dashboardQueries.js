@@ -13,6 +13,7 @@ export const QUERY_KEYS = {
   userProfile: ["userProfile"],
   splits: ["splits"],
   mySplits: ["mySplits"],
+  joinedSplits: ["joinedSplits"],
 };
 
 // ─── Fetchers ──────────────────────────────────────────────────────────────────
@@ -43,5 +44,15 @@ export async function fetchSplits() {
  */
 export async function fetchMySplits() {
   const response = await axiosInstance.get("/userown-split");
+  return response.data;
+}
+
+/**
+ * Fetch the split groups the authenticated user is currently a member of.
+ * GET /joined-splits
+ * Response: { message, totalsplitjoined, splitJoined: [{ _id, splitname, splitCode, userId, username, approved }] }
+ */
+export async function fetchJoinedSplits() {
+  const response = await axiosInstance.get("/joined-splits");
   return response.data;
 }

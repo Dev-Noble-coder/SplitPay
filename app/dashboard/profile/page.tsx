@@ -155,7 +155,7 @@ export default function ProfilePage() {
 
       {/* Save Changes Button (Sticky Bottom) */}
       <div className="fixed bottom-0 left-0 right-0 p-6 bg-white border-t border-gray-50">
-        <button className="w-full bg-[#0A50E4] hover:bg-blue-700 text-white font-bold py-4 rounded-full shadow shadow-blue-500/20 transition-all active:scale-[0.98]">
+        <button className="w-full bg-[#0A50E4] hover:bg-blue-700 text-white font-bold py-4 rounded-full shadow shadow-blue-500/20 transition-all active:scale-[0.98] text-sm">
           SAVE CHANGES
         </button>
       </div>

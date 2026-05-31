@@ -46,14 +46,14 @@ export default function PayoutsPage() {
   return (
     <div className="min-h-screen bg-white flex flex-col relative pb-24">
       {/* Header */}
-      <div className="px-6 pt-6 pb-4">
+      <div className="px-3.5 pt-6 pb-4">
         <button onClick={() => router.back()} className="mb-6 hover:text-[#0A50E4] transition-colors">
           <ArrowLeft size="24" variant="Outline" color="#0B355B" className="hover:text-[#0A50E4]" />
         </button>
         <h1 className="text-[28px] font-bold text-[#0B355B]">Payouts</h1>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-6 no-scrollbar">
+      <div className="flex-1 overflow-y-auto px-3.5 no-scrollbar">
         {/* Balance Card */}
         <div className="w-full bg-[#0A50E4] rounded-md p-6 text-white mb-8 relative overflow-hidden shadow-lg shadow-blue-500/20">
           {/* Background pattern/gradient */}

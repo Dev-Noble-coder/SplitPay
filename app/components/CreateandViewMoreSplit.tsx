@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import { Add, Eye } from 'iconsax-react'
 import Link from 'next/link'
 
-const CreateandViewMoreSplit = () => {
+const CreateandViewMoreSplit = ({ onViewMore }: { onViewMore?: () => void }) => {
   return (
     <div className='mt-6 grid grid-cols-3 gap-3 px-1'>
 
@@ -35,7 +35,7 @@ const CreateandViewMoreSplit = () => {
       </Link>
 
       {/* ── SEE ALL SPLITS ── Soft Lavender */}
-      <Link href="/dashboard/splits" className="col-span-2">
+      <div onClick={onViewMore} className="col-span-2 block cursor-pointer">
         <motion.div
           whileHover={{ y: -4, scale: 1.02 }}
           transition={{ type: 'spring', stiffness: 400, damping: 20 }}
@@ -63,7 +63,7 @@ const CreateandViewMoreSplit = () => {
             <Eye size={22} color="#1E355E" variant="Bold" />
           </div>
         </motion.div>
-      </Link>
+      </div>
 
     </div>
   )
