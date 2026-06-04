@@ -12,6 +12,7 @@ interface Split {
   name: string;
   priceForSplit: number;
   payout?: string;
+  splitCode?: string;
 }
 
 export default function AvailableSplitsPage() {
@@ -92,7 +93,8 @@ export default function AvailableSplitsPage() {
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.05, duration: 0.3 }}
-                className="w-full bg-white border border-gray-200 rounded-sm p-5 transition-all hover:border-blue-100 "
+                onClick={() => router.push(`/dashboard/split/${split.splitCode || split._id}`)}
+                className="w-full bg-white border border-gray-200 rounded-sm p-5 transition-all hover:border-blue-100 cursor-pointer"
               >
                 <div className="flex items-start justify-between">
                   {/* Left content */}
@@ -124,7 +126,10 @@ export default function AvailableSplitsPage() {
 
                 <div className="mt-4 pt-4 border-t border-gray-50 flex items-center justify-between">
                   <span className="text-xs font-semibold text-gray-400">Open to join</span>
-                  <button className="px-6 py-2 bg-[#0A50E4] hover:bg-blue-700 transition-colors text-white text-xs font-bold rounded-full">
+                  <button 
+                    onClick={() => router.push(`/dashboard/split/${split.splitCode || split._id}`)}
+                    className="px-6 py-2 bg-[#0A50E4] hover:bg-blue-700 transition-colors text-white text-xs font-bold rounded-full"
+                  >
                     Join Split
                   </button>
                 </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { isLoggedIn } from "@/app/services/authService";
 import { fetchSplits, QUERY_KEYS } from "@/app/queries/dashboardQueries";
 import { Timer1, MoneyRecive, People, ArrowRight3 } from "iconsax-react";
@@ -11,9 +12,11 @@ interface Split {
   name: string;
   priceForSplit: number;
   payout?: string; // Included to show dynamic payout frequencies cleanly
+  splitCode?: string;
 }
 
 const SplitsClosingSoon = () => {
+  const router = useRouter();
   const {
     data: splitsResponse,
     isLoading,
@@ -71,7 +74,8 @@ const SplitsClosingSoon = () => {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: i * 0.07, duration: 0.3 }}
-          className="w-full flex items-center justify-between bg-white border border-gray-100 rounded-sm px-5 py-8  transition-all cursor-pointer group "
+          onClick={() => router.push(`/dashboard/split/${split.splitCode || split._id}`)}
+          className="w-full flex items-center justify-between bg-white border border-gray-100 rounded-sm px-5 py-8  transition-all cursor-pointer group hover:border-blue-100 hover:shadow-sm"
         >
           {/* Left: Icon + Info */}
           <div className="flex items-center gap-3">

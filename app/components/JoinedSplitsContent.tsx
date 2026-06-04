@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { isLoggedIn } from "@/app/services/authService";
 import { fetchJoinedSplits, QUERY_KEYS } from "@/app/queries/dashboardQueries";
 import { Timer1, People, ArrowRight3, SearchZoomIn, DocumentText } from "iconsax-react";
@@ -17,6 +18,7 @@ interface JoinedSplit {
 }
 
 const JoinedSplitsContent = () => {
+  const router = useRouter();
   const {
     data: splitsResponse,
     isLoading,
@@ -118,6 +120,7 @@ const JoinedSplitsContent = () => {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.07, duration: 0.3 }}
+            onClick={() => router.push(`/dashboard/split/${split.splitCode}`)}
             className="w-full flex items-center justify-between bg-white border border-gray-100 rounded-sm px-5 py-8 transition-all cursor-pointer group hover:border-blue-100 hover:shadow-sm"
           >
             {/* Left: Icon + Info */}

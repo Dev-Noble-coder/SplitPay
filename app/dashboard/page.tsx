@@ -28,6 +28,7 @@ export default function Dashboard() {
   const [priceForSplit, setPriceForSplit] = useState("");
   const [payout, setPayout] = useState<"daily" | "weekly" | "monthly">("weekly");
   const [numberofusers, setNumberofusers] = useState(4);
+  const [joinAsMember, setJoinAsMember] = useState(true);
 
 
   useEffect(() => {
@@ -79,6 +80,7 @@ export default function Dashboard() {
       payout: payout,
       numberofusers: numberofusers,
       creatorId: creatorId,
+      member: joinAsMember
     };
 
     createSplitMutation.mutate(payload);
@@ -253,7 +255,7 @@ export default function Dashboard() {
                 onSubmit={handleCreateSplitSubmit} 
                 className="flex-1 flex flex-col justify-between text-left"
               >
-                <div className="space-y-3.5">
+                <div className="space-y-2.5">
                   {/* Name Input */}
                   <div>
                     <label className="text-xs font-bold text-white/80 uppercase tracking-wider block mb-1">
@@ -336,6 +338,27 @@ export default function Dashboard() {
                         +
                       </button>
                     </div>
+                  </div>
+
+                  <div className="flex items-center justify-between bg-white/5 border border-white/10 rounded-xl p-3 mt-1">
+                    <div className="flex flex-col">
+                      <span className="text-xs font-bold text-white">Join as active member</span>
+                      <span className="text-[10px] text-white/60">Do you want to secure a slot in this collection round?</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setJoinAsMember(!joinAsMember)}
+                      disabled={isSubmitting}
+                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${
+                        joinAsMember ? "bg-white" : "bg-white/20"
+                      }`}
+                    >
+                      <span
+                        className={`inline-block h-4 w-4 transform rounded-full bg-secondary transition-transform ${
+                          joinAsMember ? "translate-x-6" : "translate-x-1"
+                        }`}
+                      />
+                    </button>
                   </div>
                 </div>
 

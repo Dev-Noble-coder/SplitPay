@@ -14,6 +14,7 @@ export const QUERY_KEYS = {
   splits: ["splits"],
   mySplits: ["mySplits"],
   joinedSplits: ["joinedSplits"],
+  splitInfo: (code) => ["splitInfo", code],
 };
 
 // ─── Fetchers ──────────────────────────────────────────────────────────────────
@@ -54,5 +55,15 @@ export async function fetchMySplits() {
  */
 export async function fetchJoinedSplits() {
   const response = await axiosInstance.get("/joined-splits");
+  return response.data;
+}
+
+/**
+ * Fetch specific details about a given split code.
+ * POST /split-info
+ * Response: { message, members, approvedMebers, estimetedUsers, creatorName }
+ */
+export async function fetchSplitInfo(splitCode) {
+  const response = await axiosInstance.post("/split-info", { splitCode });
   return response.data;
 }

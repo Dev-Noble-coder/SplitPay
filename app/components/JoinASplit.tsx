@@ -7,7 +7,7 @@ import { ArrowRight, UserSquare } from 'iconsax-react'
 // CTA bar: Ready to Join A Split?
 const JoinASplit = () => {
   return (
-    <Link href="/dashboard/split" className="col-span-3">
+    <Link href="/dashboard/splits" className="col-span-3">
       <motion.div
         whileHover={{ y: -2, scale: 1.02 }}
         transition={{ type: 'spring', stiffness: 300, damping: 20 }}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { isLoggedIn } from "@/app/services/authService";
 import { fetchMySplits, QUERY_KEYS } from "@/app/queries/dashboardQueries";
 import { Timer1, MoneyRecive, ArrowRight3, AddCircle, People } from "iconsax-react";
@@ -11,9 +12,11 @@ interface Split {
   name: string;
   priceForSplit: number;
   payout?: string;
+  splitCode?: string;
 }
 
 const MySplitsContent = () => {
+  const router = useRouter();
   const {
     data: splitsResponse,
     isLoading,
@@ -109,6 +112,7 @@ const MySplitsContent = () => {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.07, duration: 0.3 }}
+            onClick={() => router.push(`/dashboard/split/${split.splitCode || split._id}`)}
             className="w-full flex items-center justify-between bg-white border border-gray-100 rounded-sm px-5 py-8 transition-all cursor-pointer group hover:border-blue-100 hover:shadow-sm"
           >
             {/* Left: Icon + Info */}
