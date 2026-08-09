@@ -35,16 +35,16 @@ export default function SplitDetailsPage() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col relative pb-24">
       {/* Header */}
-      <div className="px-6 pt-6 pb-4 bg-white shadow-sm border-b border-gray-100 z-10 sticky top-0">
+      <div className="px-6 pt-6 pb-4 bg-white border-b border-gray-200 z-10 sticky top-0">
         <div className="flex items-center gap-3 mb-4">
           <button
             onClick={() => router.back()}
-            className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-blue-950 hover:bg-gray-100 transition-colors"
+            className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-navy hover:bg-gray-100 transition-colors"
           >
-            <ArrowLeft size="24" variant="Outline" color="#0B355B" />
+            <ArrowLeft size="24" variant="Outline" color="var(--color-navy)" />
           </button>
           <div>
-            <h1 className="text-xl font-bold text-[#0B355B] leading-tight">Split Details</h1>
+            <h1 className="text-xl font-bold text-navy leading-tight">Split Details</h1>
             <p className="text-xs text-gray-500 mt-0.5 font-medium uppercase tracking-widest">
               Code: {splitCode}
             </p>
@@ -56,18 +56,18 @@ export default function SplitDetailsPage() {
         {/* Loading State */}
         {isLoading && (
           <div className="space-y-6">
-            <div className="w-full h-32 bg-white rounded-2xl animate-pulse border border-gray-100 shadow-sm" />
+            <div className="w-full h-32 bg-white rounded-md animate-pulse border border-gray-200" />
             <div className="grid grid-cols-2 gap-4">
-              <div className="h-24 bg-white rounded-xl animate-pulse border border-gray-100 shadow-sm" />
-              <div className="h-24 bg-white rounded-xl animate-pulse border border-gray-100 shadow-sm" />
+              <div className="h-24 bg-white rounded-md animate-pulse border border-gray-200" />
+              <div className="h-24 bg-white rounded-md animate-pulse border border-gray-200" />
             </div>
-            <div className="w-full h-48 bg-white rounded-2xl animate-pulse border border-gray-100 shadow-sm" />
+            <div className="w-full h-48 bg-white rounded-md animate-pulse border border-gray-200" />
           </div>
         )}
 
         {/* Error State */}
         {isError && (
-          <div className="flex flex-col items-center justify-center gap-4 py-16 px-6 bg-white border border-red-100 rounded-2xl text-center shadow-sm">
+          <div className="flex flex-col items-center justify-center gap-4 py-16 px-6 bg-white border border-red-200 rounded-md text-center">
             <div className="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center">
               <Timer1 size="32" color="#ef4444" variant="Bold" />
             </div>
@@ -95,13 +95,13 @@ export default function SplitDetailsPage() {
             className="space-y-6"
           >
             {/* Creator Info Card */}
-            <div className="bg-gradient-to-br from-[#0B355B] to-[#0A50E4] rounded-2xl p-6 text-white shadow-lg relative overflow-hidden">
+            <div className="bg-gradient-to-br from-navy to-primary rounded-md p-6 text-white relative overflow-hidden">
               <div className="absolute top-0 right-0 p-4 opacity-10">
-                <People size="120" variant="Bold" />
+                <People size="120" color="#ffffff" variant="Bold" />
               </div>
               <div className="relative z-10">
                 <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-3 py-1.5 rounded-full mb-4">
-                  <User size="16" variant="Bold" />
+                  <User size="16" color="#ffffff" variant="Bold" />
                   <span className="text-xs font-semibold tracking-wide">CREATOR</span>
                 </div>
                 <h2 className="text-3xl font-extrabold mb-1">
@@ -120,16 +120,16 @@ export default function SplitDetailsPage() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.1, duration: 0.3 }}
-                className="bg-white p-5 rounded-xl border border-gray-100 shadow-sm flex flex-col gap-3"
+                className="bg-white p-5 rounded-md border border-gray-200 flex flex-col gap-3"
               >
-                <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center">
-                  <People size="20" color="#0A50E4" variant="Bold" />
+                <div className="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center">
+                  <People size="20" color="var(--color-primary)" variant="Bold" />
                 </div>
                 <div>
                   <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">
                     Estimated Users
                   </p>
-                  <p className="text-2xl font-bold text-[#0B355B]">
+                  <p className="text-2xl font-bold text-navy">
                     {infoResponse.estimetedUsers || 0}
                   </p>
                 </div>
@@ -139,7 +139,7 @@ export default function SplitDetailsPage() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.2, duration: 0.3 }}
-                className="bg-white p-5 rounded-xl border border-gray-100 shadow-sm flex flex-col gap-3"
+                className="bg-white p-5 rounded-md border border-gray-200 flex flex-col gap-3"
               >
                 <div className="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center">
                   <UserTick size="20" color="#10b981" variant="Bold" />
@@ -148,7 +148,7 @@ export default function SplitDetailsPage() {
                   <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">
                     Approved Members
                   </p>
-                  <p className="text-2xl font-bold text-[#0B355B]">
+                  <p className="text-2xl font-bold text-navy">
                     {infoResponse.approvedMebers || 0}
                   </p>
                 </div>
@@ -161,19 +161,19 @@ export default function SplitDetailsPage() {
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.3 }}
-                className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden"
+                className="bg-white rounded-md border border-gray-200 overflow-hidden"
               >
                 <div className="px-5 py-4 border-b border-gray-50 bg-gray-50/50">
-                  <h3 className="text-sm font-bold text-[#0B355B]">Current Members</h3>
+                  <h3 className="text-sm font-bold text-navy">Current Members</h3>
                 </div>
                 <div className="divide-y divide-gray-50">
                   {infoResponse.members.map((member: any, i: number) => (
                     <div key={i} className="px-5 py-4 flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-[#0A50E4] font-bold text-sm">
+                      <div className="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center text-primary font-bold text-sm">
                         {(member.name || "U")[0].toUpperCase()}
                       </div>
                       <div>
-                        <p className="text-sm font-semibold text-[#0B355B]">{member.name || "User"}</p>
+                        <p className="text-sm font-semibold text-navy">{member.name || "User"}</p>
                         <p className="text-xs text-gray-500">Joined Recently</p>
                       </div>
                     </div>
@@ -190,7 +190,7 @@ export default function SplitDetailsPage() {
               className="mt-8 mb-8"
             >
               {!isMember ? (
-                <button className="w-full py-4 bg-[#0A50E4] hover:bg-blue-700 active:scale-[0.98] transition-all text-white text-base font-bold rounded-xl shadow-lg shadow-blue-500/30 flex items-center justify-center gap-2">
+                <button className="w-full py-4 bg-primary hover:bg-primary-dark active:scale-[0.98] transition-all text-white text-base font-bold rounded-full flex items-center justify-center gap-2">
                   Join this Split
                 </button>
               ) : (

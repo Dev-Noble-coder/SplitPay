@@ -145,7 +145,7 @@ export default function Dashboard() {
               y: isCreatingSplit ? 0 : activeCard === "create" ? 0 : -60,
               scale: isCreatingSplit ? 1 : activeCard === "create" ? 1 : 0.95,
               zIndex: isCreatingSplit || activeCard === "create" ? 20 : 0,
-              height: isCreatingSplit ? "520px" : "320px",
+              height: isCreatingSplit ? "540px" : "320px",
             }}
             transition={{ type: "tween", ease: "easeInOut", duration: 0.4 }}
             className={`absolute top-0 w-full rounded-xl p-6 shadow-xl flex flex-col ${shareCode ? 'bg-white' : 'bg-secondary'} border-t ${shareCode ? 'border-gray-100' : 'border-white/20'} transition-all ${
@@ -340,7 +340,7 @@ export default function Dashboard() {
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between bg-white/5 border border-white/10 rounded-xl p-3 mt-1">
+                  <div className="flex items-center justify-between bg-white/5 border border-white/10 rounded-xl p-3 mt-1 mb-5">
                     <div className="flex flex-col">
                       <span className="text-xs font-bold text-white">Join as active member</span>
                       <span className="text-[10px] text-white/60">Do you want to secure a slot in this collection round?</span>

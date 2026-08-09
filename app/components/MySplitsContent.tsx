@@ -86,7 +86,10 @@ const MySplitsContent = () => {
             Create a split group and invite your friends to start saving together.
           </p>
         </div>
-        <button className="mt-4 px-8 py-3 bg-[#0A50E4] hover:bg-blue-700 transition-colors text-white text-sm font-semibold rounded-full  flex items-center gap-2">
+        <button 
+          onClick={() => router.push('/dashboard/create-split')}
+          className="mt-4 px-8 py-3 bg-[#0A50E4] hover:bg-blue-700 transition-colors text-white text-sm font-semibold rounded-full  flex items-center gap-2"
+        >
           <AddCircle size="18" color="#FFFFFF" variant="Bold" />
           Create New Split
         </button>
@@ -99,7 +102,10 @@ const MySplitsContent = () => {
     <div className="mt-6 px-1 pb-4">
       <div className="flex items-center justify-between mb-4 mt-2">
         <h2 className="font-semibold text-xl text-blue-950">Created Splits</h2>
-        <button className="text-sm font-bold text-[#0A50E4] hover:text-blue-700 bg-blue-50 hover:bg-blue-100 transition-colors px-6 py-1.5 rounded-full flex items-center gap-1">
+        <button 
+          onClick={() => router.push('/dashboard/create-split')}
+          className="text-sm font-bold text-[#0A50E4] hover:text-blue-700 bg-blue-50 hover:bg-blue-100 transition-colors px-6 py-1.5 rounded-full flex items-center gap-1"
+        >
           <AddCircle size="16" color="#0A50E4" variant="Bold" />
           Add More
         </button>
