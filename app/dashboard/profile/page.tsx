@@ -1,8 +1,7 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { fetchUserProfile, QUERY_KEYS } from "@/app/queries/dashboardQueries";
+import { useUserProfile } from "@/app/hooks/useDashboard";
 import { isLoggedIn } from "@/app/services/authService";
 import { ArrowLeft, Camera, ArrowRight2 } from "iconsax-react";
 import { useState } from "react";
@@ -12,13 +11,11 @@ export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState("PERSONAL");
   const [visibility, setVisibility] = useState(true);
 
-  const { data: userResponse, isLoading } = useQuery({
-    queryKey: QUERY_KEYS.userProfile,
-    queryFn: fetchUserProfile,
+  const { data: userResponse, isLoading } = useUserProfile({
     enabled: isLoggedIn(),
   });
 
-  const user = userResponse?.userInformation || userResponse;
+  const user = (userResponse as any)?.userInformation || userResponse;
 
   if (isLoading) {
     return (

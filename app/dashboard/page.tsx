@@ -7,8 +7,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Add, Login, ArrowLeft, Copy, TickCircle } from "iconsax-react";
 import { toast } from "sonner";
 import { isLoggedIn } from "../services/authService";
-import axiosInstance from "@/utils/axiosInstance";
-import { fetchUserProfile, QUERY_KEYS } from "@/app/queries/dashboardQueries";
+import api from "../lib/api";
+import { useUserProfile } from "../hooks/useDashboard";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -37,17 +37,15 @@ export default function Dashboard() {
     }
   }, [router]);
 
-  const { data: userResponse, isLoading: loadingUser } = useQuery({
-    queryKey: QUERY_KEYS.userProfile,
-    queryFn: fetchUserProfile,
+  const { data: userResponse, isLoading: loadingUser } = useUserProfile({
     enabled: isLoggedIn(),
   });
   
-  const user = userResponse?.userInformation || userResponse;
+  const user = (userResponse as any)?.userInformation || userResponse;
 
   const createSplitMutation = useMutation({
     mutationFn: async (payload: any) => {
-      const response = await axiosInstance.post("/create-splits", payload);
+      const response = await api.post("/create-splits", payload);
       return response.data;
     },
     onSuccess: (data) => {

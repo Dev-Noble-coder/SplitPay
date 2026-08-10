@@ -7,8 +7,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Copy, TickCircle, MoneyRecive, People, Timer1 } from "iconsax-react";
 import { toast } from "sonner";
 import { isLoggedIn } from "@/app/services/authService";
-import axiosInstance from "@/utils/axiosInstance";
-import { fetchUserProfile, QUERY_KEYS } from "@/app/queries/dashboardQueries";
+import api from "@/app/lib/api";
+import { useUserProfile } from "@/app/hooks/useDashboard";
+import DASHBOARD_QUERY_KEYS from "@/app/lib/queryKey";
 
 export default function CreateSplitPage() {
   const router = useRouter();
@@ -31,17 +32,15 @@ export default function CreateSplitPage() {
     }
   }, [router]);
 
-  const { data: userResponse, isLoading: loadingUser } = useQuery({
-    queryKey: QUERY_KEYS.userProfile,
-    queryFn: fetchUserProfile,
+  const { data: userResponse, isLoading: loadingUser } = useUserProfile({
     enabled: isLoggedIn(),
   });
 
-  const user = userResponse?.userInformation || userResponse;
+  const user = (userResponse as any)?.userInformation || userResponse;
 
   const createSplitMutation = useMutation({
     mutationFn: async (payload: any) => {
-      const response = await axiosInstance.post("/create-splits", payload);
+      const response = await api.post("/create-splits", payload);
       return response.data;
     },
     onSuccess: (data) => {
@@ -53,9 +52,9 @@ export default function CreateSplitPage() {
         data?.circleCode ||
         Math.random().toString(36).substring(2, 8).toUpperCase();
       setShareCode(code);
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.splits });
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.mySplits });
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.joinedSplits });
+      queryClient.invalidateQueries({ queryKey: DASHBOARD_QUERY_KEYS.splits });
+      queryClient.invalidateQueries({ queryKey: DASHBOARD_QUERY_KEYS.mySplits });
+      queryClient.invalidateQueries({ queryKey: DASHBOARD_QUERY_KEYS.joinedSplits });
     },
     onError: (err: any) => {
       console.error("Create split error:", err);

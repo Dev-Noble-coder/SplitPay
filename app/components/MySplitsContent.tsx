@@ -1,9 +1,8 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { isLoggedIn } from "@/app/services/authService";
-import { fetchMySplits, QUERY_KEYS } from "@/app/queries/dashboardQueries";
+import { useMySplits } from "@/app/hooks/useDashboard";
 import { Timer1, MoneyRecive, ArrowRight3, AddCircle, People } from "iconsax-react";
 import { motion } from "framer-motion";
 
@@ -21,14 +20,12 @@ const MySplitsContent = () => {
     data: splitsResponse,
     isLoading,
     isError,
-  } = useQuery({
-    queryKey: QUERY_KEYS.mySplits,
-    queryFn: fetchMySplits,
+  } = useMySplits({
     enabled: isLoggedIn(),
   });
 
   // the API returns { message: string, splitsfound: number, split: [] }
-  const splits: Split[] = splitsResponse?.split ?? [];
+  const splits: Split[] = (splitsResponse as any)?.split ?? [];
 
   // ── Loading State ──────────────────────────────────────────────────
   if (isLoading) {

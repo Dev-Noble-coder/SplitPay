@@ -1,8 +1,7 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
-import { fetchSplitInfo, fetchJoinedSplits, QUERY_KEYS } from "@/app/queries/dashboardQueries";
+import { useJoinedSplits, useSplitInfo } from "@/app/hooks/useDashboard";
 import { isLoggedIn } from "@/app/services/authService";
 import { ArrowLeft, UserTick, People, Timer1, User, TickCircle, Information } from "iconsax-react";
 import { motion } from "framer-motion";
@@ -16,15 +15,11 @@ export default function SplitDetailsPage() {
     data: infoResponse,
     isLoading,
     isError,
-  } = useQuery({
-    queryKey: QUERY_KEYS.splitInfo(splitCode),
-    queryFn: () => fetchSplitInfo(splitCode),
+  } = useSplitInfo(splitCode, {
     enabled: !!splitCode,
   });
 
-  const { data: joinedSplitsResponse } = useQuery({
-    queryKey: QUERY_KEYS.joinedSplits,
-    queryFn: fetchJoinedSplits,
+  const { data: joinedSplitsResponse } = useJoinedSplits({
     enabled: isLoggedIn(),
   });
 

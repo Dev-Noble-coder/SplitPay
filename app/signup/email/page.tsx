@@ -6,12 +6,13 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, Sms, EyeSlash, Eye, User } from "iconsax-react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
-import { createUser } from "../../services/authService";
+import { useSignupMutation } from "../../hooks/useAuth";
 
 export default function SignUpEmail() {
   const router = useRouter();
 
   // State variables with corrected standard lowercase TS types
+  const signupMutation = useSignupMutation();
   const [fullName, setFullName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -35,19 +36,18 @@ export default function SignUpEmail() {
     setIsLoading(true);
     const toastId = toast.loading("Creating your SplitPay account...");
 
-    try {
-      const data = await createUser({ fullName, email, password });
-      toast.success("Account created successfully! Please log in.", { id: toastId });
-      
-      
-      // Smoothly navigate to the login page
-      router.push("/login");
-    } catch (err: any) {
-      console.error("Signup error details:", err);
-      const errMsg = err.response?.data?.message || err.message || "Failed to create account. Please try again.";
-      toast.error(errMsg, { id: toastId });
-      setIsLoading(false);
-    }
+    signupMutation.mutate({ fullName, email, password }, {
+      onSuccess: () => {
+        toast.success("Account created successfully! Please log in.", { id: toastId });
+        router.push("/login");
+      },
+      onError: (err: any) => {
+        console.error("Signup error details:", err);
+        const errMsg = err.response?.data?.message || err.message || "Failed to create account. Please try again.";
+        toast.error(errMsg, { id: toastId });
+        setIsLoading(false);
+      }
+    });
   };
 
   return (

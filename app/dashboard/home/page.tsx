@@ -1,8 +1,7 @@
 "use client"
 
-import { useQuery } from "@tanstack/react-query";
 import { isLoggedIn } from "../../services/authService";
-import { fetchUserProfile, fetchSplits, QUERY_KEYS } from "@/app/queries/dashboardQueries";
+import { useSplits, useUserProfile } from "@/app/hooks/useDashboard";
 import MobileNav from "@/app/components/MobileNav";
 import Header from "@/app/components/Header";
 import BalanceCard from "@/app/components/BalanceCard";
@@ -23,23 +22,19 @@ export default function DashboardHome() {
     setMounted(true);
   }, []);
 
-  const { data: userResponse, isLoading: loadingUser } = useQuery({
-    queryKey: QUERY_KEYS.userProfile,
-    queryFn: fetchUserProfile,
+  const { data: userResponse, isLoading: loadingUser } = useUserProfile({
     enabled: mounted ? isLoggedIn() : false,
   });
 
-  const { data: splitsResponse } = useQuery({
-    queryKey: QUERY_KEYS.splits,
-    queryFn: fetchSplits,
+  const { data: splitsResponse } = useSplits({
     enabled: mounted ? isLoggedIn() : false,
   });
 
   const [activeTab, setActiveTab] = useState(0);
   const swiperRef = useRef<SwiperType | null>(null);
 
-  const user = userResponse?.userInformation || userResponse;
-  const splitsCount: number = splitsResponse?.splitsfound ?? 0;
+  const user = (userResponse as any)?.userInformation || userResponse;
+  const splitsCount: number = (splitsResponse as any)?.splitsfound ?? 0;
 
   if (!mounted || loadingUser) {
     return (

@@ -6,12 +6,14 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, Sms, Lock1, EyeSlash, Eye } from "iconsax-react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
-import { login, setLoggedIn } from "../services/authService";
+import { setLoggedIn } from "../services/authService";
+import { useLoginMutation } from "../hooks/useAuth";
 
 export default function Login() {
   const router = useRouter();
   
   // State variables
+  const loginMutation = useLoginMutation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -29,26 +31,25 @@ export default function Login() {
     setIsLoading(true);
     const toastId = toast.loading("Verifying your credentials...");
 
-    try {
-      const data = await login({ email, password });
-      toast.success("Logged in successfully! Welcome back.", { id: toastId });
-      
-      
-      setLoggedIn(true);
+    loginMutation.mutate({ email, password }, {
+      onSuccess: (data: any) => {
+        toast.success("Logged in successfully! Welcome back.", { id: toastId });
+        setLoggedIn(true);
+        setIsLoading(false);
 
-      setIsLoading(false)
-
-      if (data.isFirstLogin === false) {
-        router.push("/dashboard/home");
-      } else {
-        router.push("/dashboard");
+        if (data.isFirstLogin === false) {
+          router.push("/dashboard/home");
+        } else {
+          router.push("/dashboard");
+        }
+      },
+      onError: (err: any) => {
+        console.error("Login error details:", err);
+        const errMsg = err.response?.data?.message || err.message || "Failed to log in. Please check your credentials.";
+        toast.error(errMsg, { id: toastId });
+        setIsLoading(false);
       }
-    } catch (err: any) {
-      console.error("Login error details:", err);
-      const errMsg = err.response?.data?.message || err.message || "Failed to log in. Please check your credentials.";
-      toast.error(errMsg, { id: toastId });
-      setIsLoading(false);
-    }
+    });
   };
 
   return (

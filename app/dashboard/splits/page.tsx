@@ -1,9 +1,8 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { isLoggedIn } from "@/app/services/authService";
-import { fetchSplits, QUERY_KEYS } from "@/app/queries/dashboardQueries";
+import { useSplits } from "@/app/hooks/useDashboard";
 import { Timer1, MoneyRecive, ArrowLeft, SearchNormal1, People } from "iconsax-react";
 import { motion } from "framer-motion";
 
@@ -22,13 +21,11 @@ export default function AvailableSplitsPage() {
     data: splitsResponse,
     isLoading,
     isError,
-  } = useQuery({
-    queryKey: QUERY_KEYS.splits,
-    queryFn: fetchSplits,
+  } = useSplits({
     enabled: isLoggedIn(),
   });
 
-  const splits: Split[] = splitsResponse?.availableSplit ?? [];
+  const splits: Split[] = (splitsResponse as any)?.availableSplit ?? [];
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col relative pb-24">

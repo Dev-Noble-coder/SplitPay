@@ -1,9 +1,8 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { isLoggedIn } from "@/app/services/authService";
-import { fetchJoinedSplits, QUERY_KEYS } from "@/app/queries/dashboardQueries";
+import { useJoinedSplits } from "@/app/hooks/useDashboard";
 import { Timer1, People, ArrowRight3, SearchZoomIn, DocumentText } from "iconsax-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -23,13 +22,11 @@ const JoinedSplitsContent = () => {
     data: splitsResponse,
     isLoading,
     isError,
-  } = useQuery({
-    queryKey: QUERY_KEYS.joinedSplits,
-    queryFn: fetchJoinedSplits,
+  } = useJoinedSplits({
     enabled: isLoggedIn(),
   });
 
-  const joinedSplits: JoinedSplit[] = splitsResponse?.splitJoined ?? [];
+  const joinedSplits: JoinedSplit[] = (splitsResponse as any)?.splitJoined ?? [];
 
   // ── Loading State ──────────────────────────────────────────────────
   if (isLoading) {

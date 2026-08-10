@@ -1,17 +1,20 @@
-import axios from "axios";
-import { refreshToken } from "../app/services/authService";
-import { normalizeEmailFields } from "./normalizationUtils";
+import axios, { InternalAxiosRequestConfig } from "axios";
+import { normalizeEmailFields } from "../../utils/normalizationUtils";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || process.env.BACKEND_URL;
+// Fallback to localhost if the env variable is not set
+const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-const axiosInstance = axios.create({
-  baseURL: API_BASE_URL,
-  withCredentials: true,
+const api = axios.create({
+    baseURL: API_BASE_URL,
+    withCredentials: true,
+    headers: {
+        "Content-Type": "application/json",
+    },   
 });
 
 // Attach token on requests (cookies are sent automatically via withCredentials)
-axiosInstance.interceptors.request.use(
-  (config) => {
+api.interceptors.request.use(
+  (config: InternalAxiosRequestConfig) => {
     // Normalize email fields in payload or params
     if (config.data && !(config.data instanceof FormData)) {
       config.data = normalizeEmailFields(config.data);
@@ -25,7 +28,7 @@ axiosInstance.interceptors.request.use(
 );
 
 // Handle token expiration (backend handles set-cookie responses silently)
-axiosInstance.interceptors.response.use(
+api.interceptors.response.use(
   (res) => res,
   async (error) => {
     const originalRequest = error.config;
@@ -35,8 +38,10 @@ axiosInstance.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        await refreshToken();
-        return axiosInstance(originalRequest);
+        await axios.post(`${API_BASE_URL}/refresh-token`, {}, {
+            withCredentials: true,
+        });
+        return api(originalRequest);
       } catch (err) {
         console.error("Auto-refresh failed → redirecting to login");
         if (typeof window !== "undefined") {
@@ -51,4 +56,4 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-export default axiosInstance;
+export default api;

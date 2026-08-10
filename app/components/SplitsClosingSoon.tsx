@@ -1,9 +1,8 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { isLoggedIn } from "@/app/services/authService";
-import { fetchSplits, QUERY_KEYS } from "@/app/queries/dashboardQueries";
+import { useSplits } from "@/app/hooks/useDashboard";
 import { Timer1, MoneyRecive, People, ArrowRight3 } from "iconsax-react";
 import { motion } from "framer-motion";
 
@@ -21,13 +20,11 @@ const SplitsClosingSoon = () => {
     data: splitsResponse,
     isLoading,
     isError,
-  } = useQuery({
-    queryKey: QUERY_KEYS.splits,
-    queryFn: fetchSplits,
+  } = useSplits({
     enabled: isLoggedIn(),
   });
 
-  const splits: Split[] = splitsResponse?.availableSplit ?? [];
+  const splits: Split[] = (splitsResponse as any)?.availableSplit ?? [];
 
   // ── Loading State ──────────────────────────────────────────────────
   // Increased height with h-[96px] to complement the dashboard's design padding
